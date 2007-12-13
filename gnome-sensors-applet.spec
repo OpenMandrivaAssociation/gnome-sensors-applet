@@ -1,5 +1,5 @@
 %define name	gnome-sensors-applet
-%define version 1.7.10
+%define version 2.0.1
 %define release %mkrel 1
 
 Name: 	 	%{name}
@@ -32,7 +32,7 @@ Interfaces via the Linux kernel i2c modules.
 %build
 %configure2_5x --disable-scrollkeeper --prefix=/usr
 %make
-										
+
 %install
 rm -rf $RPM_BUILD_ROOT
 %makeinstall
