@@ -11,6 +11,7 @@ Source:		sensors-applet-%{version}.tar.bz2
 URL:		http://sensors-applet.sourceforge.net/
 License:	GPL
 Group:		Graphical desktop/GNOME
+BuildRoot:	%{_tmppath}/%{name}-buildroot
 BuildRequires:	libpanel-applet-2-devel
 BuildRequires:  perl-XML-Parser
 BuildRequires:  scrollkeeper
