@@ -1,5 +1,5 @@
 %define name	gnome-sensors-applet
-%define version 2.0.1
+%define version 2.2.1
 %define release %mkrel 1
 
 Name: 	 	%{name}
@@ -7,13 +7,14 @@ Summary: 	Detailed hardware monitoring applet for GNOME2
 Version: 	%{version}
 Release: 	%{release}
 
-Source:		sensors-applet-%{version}.tar.bz2
+Source:		http://sensors-applet.sourceforge.net/downloads/sensors-applet-%{version}.tar.gz
 URL:		http://sensors-applet.sourceforge.net/
-License:	GPL
+License:	GPLv2+
 Group:		Graphical desktop/GNOME
 BuildRoot:	%{_tmppath}/%{name}-buildroot
 BuildRequires:	libpanel-applet-2-devel
 BuildRequires:  perl-XML-Parser
+BuildRequires:	libnotify-devel
 BuildRequires:  scrollkeeper
 BuildRequires:  gnome-doc-utils libxslt-proc
 Requires(post): scrollkeeper
@@ -26,17 +27,25 @@ voltage readings under Linux.
 
 Interfaces via the Linux kernel i2c modules.
 
+%package devel
+Group:	Development/GNOME and GTK+
+Summary: Development files for gnome-sensors-applet
+Requires: %name = %version
+
+%description devel
+This package contains development files for gnome-sensors-applet.
+
 %prep
 %setup -q -n sensors-applet-%version
 
 %build
-%configure2_5x --disable-scrollkeeper --prefix=/usr
+%configure2_5x --disable-scrollkeeper --enable-libnotify
 %make
 
 %install
 rm -rf $RPM_BUILD_ROOT
-%makeinstall
-rm -f %buildroot%_datadir/icons/hicolor/icon-theme.cache
+mkdir -p %buildroot%_libdir/sensors-applet/plugins
+%makeinstall_std
 %find_lang sensors-applet
 
 %clean
@@ -61,5 +70,12 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_datadir}/omf/sensors-applet
 %{_datadir}/omf/sensors-applet/*-C.omf
 %_datadir/icons/hicolor/*/*/*.png
+%_libdir/*.so.*
 
+%files devel
+%defattr(-,root,root)
+%_includedir/sensors-applet/*.h
+%_libdir/*.a
+%_libdir/*.la
+%_libdir/*.so
 
