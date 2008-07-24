@@ -1,6 +1,6 @@
 %define name	gnome-sensors-applet
 %define version 2.2.1
-%define release %mkrel 2
+%define release %mkrel 4
 
 Name: 	 	%{name}
 Summary: 	Detailed hardware monitoring applet for GNOME2
