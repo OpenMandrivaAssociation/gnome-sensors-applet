@@ -23,6 +23,7 @@ BuildRequires:  rarian
 BuildRequires:  gnome-doc-utils
 BuildRequires:	libxslt-proc
 BuildRequires:	lm_sensors-devel
+BuildRequires:	intltool
 Requires(post): rarian
 Requires(postun): rarian
 
