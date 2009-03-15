@@ -1,6 +1,6 @@
 %define name	gnome-sensors-applet
-%define version 2.2.1
-%define release %mkrel 4
+%define version 2.2.3
+%define release %mkrel 1
 
 Name: 	 	%{name}
 Summary: 	Detailed hardware monitoring applet for GNOME2
@@ -10,6 +10,8 @@ Release: 	%{release}
 Source:		http://sensors-applet.sourceforge.net/downloads/sensors-applet-%{version}.tar.gz
 # (fc) 2.2.1-2mdv fix location of applet, caused by libdir == libexecdir (Mdv bug #37154)
 Patch0:		sensors-applet-2.2.1-fixlibdir.patch
+Patch1:		sensors-applet-2.2.3-fix-linkage.patch
+Patch2:		sensors-applet-2.2.3-fix-str-fmt.patch
 URL:		http://sensors-applet.sourceforge.net/
 License:	GPLv2+
 Group:		Graphical desktop/GNOME
@@ -17,10 +19,12 @@ BuildRoot:	%{_tmppath}/%{name}-buildroot
 BuildRequires:	libpanel-applet-2-devel
 BuildRequires:  perl-XML-Parser
 BuildRequires:	libnotify-devel
-BuildRequires:  scrollkeeper
-BuildRequires:  gnome-doc-utils libxslt-proc
-Requires(post): scrollkeeper
-Requires(postun): scrollkeeper
+BuildRequires:  rarian
+BuildRequires:  gnome-doc-utils
+BuildRequires:	libxslt-proc
+BuildRequires:	lm_sensors-devel
+Requires(post): rarian
+Requires(postun): rarian
 
 %description
 GNOME Sensors Applet is an applet for the GNOME Panel to display readings
@@ -40,19 +44,21 @@ This package contains development files for gnome-sensors-applet.
 %prep
 %setup -q -n sensors-applet-%version
 %patch0 -p1 -b .fixlibdir
+%patch1	-p0 -b .fixlinkage
+%patch2 -p0 -b .str-fmt
 
 %build
 %configure2_5x --disable-scrollkeeper --enable-libnotify
 %make
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p %buildroot%_libdir/sensors-applet/plugins
+rm -rf %{buildroot}
+mkdir -p %buildroot%{_libdir}/sensors-applet/plugins
 %makeinstall_std
 %find_lang sensors-applet
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %post
 %update_icon_cache hicolor
