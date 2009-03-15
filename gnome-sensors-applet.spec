@@ -25,6 +25,7 @@ BuildRequires:	libxslt-proc
 BuildRequires:	lm_sensors-devel
 BuildRequires:	intltool
 BuildRequires:	libgnomeui2-devel
+BuildRequires:	libglade2-devel
 Requires(post): rarian
 Requires(postun): rarian
 
