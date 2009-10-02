@@ -1,6 +1,6 @@
 %define name	gnome-sensors-applet
 %define version 2.2.3
-%define release %mkrel 3
+%define release %mkrel 4
 
 Name: 	 	%{name}
 Summary: 	Detailed hardware monitoring applet for GNOME2
@@ -22,7 +22,6 @@ BuildRequires:	libnotify-devel
 BuildRequires:  rarian
 BuildRequires:  gnome-doc-utils
 BuildRequires:	libxslt-proc
-BuildRequires:	lm_sensors-devel
 BuildRequires:	intltool
 BuildRequires:	libgnomeui2-devel
 BuildRequires:	libglade2-devel
@@ -51,7 +50,9 @@ This package contains development files for gnome-sensors-applet.
 %patch2 -p0 -b .str-fmt
 
 %build
-%configure2_5x --disable-scrollkeeper --enable-libnotify
+
+#disable lm-sensors, not used with kernel 2.6 (Mdv bug #53418)
+%configure2_5x --disable-scrollkeeper --enable-libnotify --without-libsensors
 %make
 
 %install
