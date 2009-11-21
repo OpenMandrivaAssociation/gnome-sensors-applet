@@ -1,17 +1,16 @@
 %define name	gnome-sensors-applet
-%define version 2.2.3
-%define release %mkrel 4
+%define version 2.2.5
+%define release %mkrel 1
 
 Name: 	 	%{name}
 Summary: 	Detailed hardware monitoring applet for GNOME2
 Version: 	%{version}
 Release: 	%{release}
 
-Source:		http://sensors-applet.sourceforge.net/downloads/sensors-applet-%{version}.tar.gz
+Source:		http://downloads.sourceforge.net/sensors-applet/sensors-applet-%{version}.tar.gz
 # (fc) 2.2.1-2mdv fix location of applet, caused by libdir == libexecdir (Mdv bug #37154)
 Patch0:		sensors-applet-2.2.1-fixlibdir.patch
 Patch1:		sensors-applet-2.2.3-fix-linkage.patch
-Patch2:		sensors-applet-2.2.3-fix-str-fmt.patch
 URL:		http://sensors-applet.sourceforge.net/
 License:	GPLv2+
 Group:		Graphical desktop/GNOME
@@ -47,12 +46,11 @@ This package contains development files for gnome-sensors-applet.
 %setup -q -n sensors-applet-%version
 %patch0 -p1 -b .fixlibdir
 %patch1	-p0 -b .fixlinkage
-%patch2 -p0 -b .str-fmt
 
 %build
 
 #disable lm-sensors, not used with kernel 2.6 (Mdv bug #53418)
-%configure2_5x --disable-scrollkeeper --enable-libnotify --without-libsensors
+%configure2_5x --disable-scrollkeeper --enable-libnotify --without-libsensors --disable-static
 %make
 
 %install
@@ -88,7 +86,6 @@ rm -rf %{buildroot}
 %files devel
 %defattr(-,root,root)
 %_includedir/sensors-applet/*.h
-%_libdir/*.a
 %_libdir/*.la
 %_libdir/*.so
 
