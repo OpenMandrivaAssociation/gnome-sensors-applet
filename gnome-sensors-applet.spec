@@ -1,6 +1,6 @@
 %define name	gnome-sensors-applet
-%define version 2.2.5
-%define release %mkrel 2
+%define version 2.2.7
+%define release %mkrel 1
 
 Name: 	 	%{name}
 Summary: 	Detailed hardware monitoring applet for GNOME2
@@ -11,21 +11,24 @@ Source:		http://downloads.sourceforge.net/sensors-applet/sensors-applet-%{versio
 # (fc) 2.2.1-2mdv fix location of applet, caused by libdir == libexecdir (Mdv bug #37154)
 Patch0:		sensors-applet-2.2.1-fixlibdir.patch
 Patch1:		sensors-applet-2.2.3-fix-linkage.patch
+Patch2:		sensors-applet-2.2.7-libnotify-0.7.patch
 URL:		http://sensors-applet.sourceforge.net/
 License:	GPLv2+
 Group:		Graphical desktop/GNOME
 BuildRoot:	%{_tmppath}/%{name}-buildroot
-BuildRequires:	libpanel-applet-2-devel
 BuildRequires:  perl-XML-Parser
+BuildRequires:	libatasmart-devel
+BuildRequires:	libbonobo-activation-devel
+BuildRequires:	dbus-glib-devel
+BuildRequires:	libGConf2-devel GConf2
+BuildRequires:	libgnome2-devel
+BuildRequires:	gtk+2-devel
 BuildRequires:	libnotify-devel
-BuildRequires:  rarian
-BuildRequires:  gnome-doc-utils
+BuildRequires:	gnome-panel-devel
+BuildRequires:	gnomeui2-devel
 BuildRequires:	libxslt-proc
 BuildRequires:	intltool
-BuildRequires:	libgnomeui2-devel
-BuildRequires:	libglade2-devel
-Requires(post): rarian
-Requires(postun): rarian
+BuildRequires:	gnome-doc-utils
 
 %description
 GNOME Sensors Applet is an applet for the GNOME Panel to display readings
@@ -46,6 +49,7 @@ This package contains development files for gnome-sensors-applet.
 %setup -q -n sensors-applet-%version
 %patch0 -p1 -b .fixlibdir
 %patch1	-p0 -b .fixlinkage
+%patch2 -p1 -b .notify
 
 %build
 
