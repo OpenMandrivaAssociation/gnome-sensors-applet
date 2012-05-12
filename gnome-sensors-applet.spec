@@ -1,21 +1,15 @@
-%define name	gnome-sensors-applet
-%define version 2.2.7
-%define release %mkrel 1
-
-Name: 	 	%{name}
+Name: 	 	gnome-sensors-applet
 Summary: 	Detailed hardware monitoring applet for GNOME2
-Version: 	%{version}
-Release: 	%{release}
-
-Source:		http://downloads.sourceforge.net/sensors-applet/sensors-applet-%{version}.tar.gz
-# (fc) 2.2.1-2mdv fix location of applet, caused by libdir == libexecdir (Mdv bug #37154)
-Patch0:		sensors-applet-2.2.1-fixlibdir.patch
-Patch1:		sensors-applet-2.2.3-fix-linkage.patch
-Patch2:		sensors-applet-2.2.7-libnotify-0.7.patch
-URL:		http://sensors-applet.sourceforge.net/
+Version: 	3.0.0
+Release: 	1
 License:	GPLv2+
 Group:		Graphical desktop/GNOME
-BuildRoot:	%{_tmppath}/%{name}-buildroot
+URL:		http://sensors-applet.sourceforge.net/
+Source0:	http://downloads.sourceforge.net/sensors-applet/sensors-applet-%{version}.tar.gz
+
+BuildRequires:	gnome-doc-utils
+BuildRequires:	intltool
+BuildRequires:	xsltproc
 BuildRequires:  perl-XML-Parser
 BuildRequires:	libatasmart-devel
 BuildRequires:	libbonobo-activation-devel
@@ -26,9 +20,6 @@ BuildRequires:	gtk+2-devel
 BuildRequires:	libnotify-devel
 BuildRequires:	gnome-panel-devel
 BuildRequires:	gnomeui2-devel
-BuildRequires:	libxslt-proc
-BuildRequires:	intltool
-BuildRequires:	gnome-doc-utils
 
 %description
 GNOME Sensors Applet is an applet for the GNOME Panel to display readings
@@ -40,56 +31,40 @@ Interfaces via the Linux kernel i2c modules.
 %package devel
 Group:	Development/GNOME and GTK+
 Summary: Development files for gnome-sensors-applet
-Requires: %name = %version
+Requires: %{name} = %{version}
 
 %description devel
 This package contains development files for gnome-sensors-applet.
 
 %prep
-%setup -q -n sensors-applet-%version
-%patch0 -p1 -b .fixlibdir
-%patch1	-p0 -b .fixlinkage
-%patch2 -p1 -b .notify
+%setup -q -n sensors-applet-%{version}
 
 %build
 
-#disable lm-sensors, not used with kernel 2.6 (Mdv bug #53418)
-%configure2_5x --disable-scrollkeeper --enable-libnotify --without-libsensors --disable-static
+%configure2_5x \
+	--disable-scrollkeeper \
+	--enable-libnotify \
+	--without-libsensors \
+	--disable-static
+
 %make
 
 %install
-rm -rf %{buildroot}
-mkdir -p %buildroot%{_libdir}/sensors-applet/plugins
+mkdir -p %{buildroot}%{_libdir}/sensors-applet/plugins
 %makeinstall_std
 %find_lang sensors-applet
 
-%clean
-rm -rf %{buildroot}
-
-%post
-%update_icon_cache hicolor
-%update_scrollkeeper
-
-%postun
-%clean_icon_cache hicolor
-%clean_scrollkeeper
-
 %files -f sensors-applet.lang
-%defattr(-,root,root)
 %doc AUTHORS ChangeLog NEWS README TODO
 %{_libdir}/sensors-applet
 %{_libdir}/bonobo/servers/*
 %{_datadir}/gnome-2.0/ui/*
 %{_datadir}/pixmaps/*
 %{_datadir}/gnome/help/sensors-applet
-%dir %{_datadir}/omf/sensors-applet
-%{_datadir}/omf/sensors-applet/*-C.omf
-%_datadir/icons/hicolor/*/*/*.png
-%_libdir/*.so.*
+%{_datadir}/icons/hicolor/*/*/*.png
+%{_libdir}/*.so.*
 
 %files devel
-%defattr(-,root,root)
-%_includedir/sensors-applet/*.h
-%_libdir/*.la
-%_libdir/*.so
+%{_includedir}/sensors-applet/*.h
+%{_libdir}/*.so
 
