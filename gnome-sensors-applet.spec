@@ -11,7 +11,7 @@ Version:	3.0.0
 Release:	2.%{git}.1
 License:	GPLv2+
 Group:		Graphical desktop/GNOME
-Url:		http://sensors-applet.sourceforge.net/
+Url:		https://sensors-applet.sourceforge.net/
 Source0:	http://downloads.sourceforge.net/sensors-applet/sensors-applet-%{version}-%{git}.tar.bz2
 BuildRequires:	gnome-common
 BuildRequires:	intltool
