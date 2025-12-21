@@ -13,6 +13,11 @@ License:	GPLv2+
 Group:		Graphical desktop/GNOME
 Url:		https://sensors-applet.sourceforge.net/
 Source0:	http://downloads.sourceforge.net/sensors-applet/sensors-applet-%{version}-%{git}.tar.bz2
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	gnome-common
 BuildRequires:	intltool
 BuildRequires:	perl-XML-Parser
